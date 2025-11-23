@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,11 +7,10 @@
     <link rel="stylesheet" href="../css/main.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-    <script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Ftravelhub3193back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
-    <script type="module" src="https://static.rocket.new/rocket-shot.js?v=0.0.1"></script>
-</head>
-
+  
+  <script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Ftravelhub3193back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.9"></script>
+  <script type="module" src="https://static.rocket.new/rocket-shot.js?v=0.0.1"></script>
+  </head>
 <body class="bg-background min-h-screen">
     <!-- Navigation Header -->
     <header class="bg-surface shadow-card sticky top-0 z-50">
@@ -32,7 +30,7 @@
                     <a href="ride_booking_modal.html" class="text-text-secondary hover:text-primary font-body transition-smooth">Rides</a>
                 </nav>
                 <div class="flex items-center space-x-3">
-                    <span class="text-sm text-text-secondary font-body">Welcome, <span id="userDisplayName">Explorer</span>!</span>
+                    <span class="text-sm text-text-secondary font-body">Welcome, <span id="userDisplayName"> Akshit </span>!</span>
                     <button id="profileBtn" class="text-text-secondary hover:text-primary transition-smooth">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
@@ -65,7 +63,7 @@
         <div class="relative">
             <div id="mapContainer" class="h-96 md:h-128 w-full relative">
                 <div id="map" class="h-full w-full rounded-none md:rounded-travel-lg"></div>
-
+                
                 <!-- Map Loading Overlay -->
                 <div id="mapLoading" class="absolute inset-0 bg-surface bg-opacity-90 flex items-center justify-center">
                     <div class="text-center">
@@ -105,8 +103,7 @@
                         <!-- Goa Card -->
                         <div class="destination-card flex-shrink-0 w-80 bg-surface rounded-travel-lg shadow-card overflow-hidden hover:shadow-modal transition-smooth hover-lift cursor-pointer" data-destination="goa">
                             <div class="relative h-48 overflow-hidden">
-                                <img src="https://images.pexels.com/photos/962464/pexels-photo-962464.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Goa Beach Paradise" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;"
-                                />
+                                <img src="https://images.pexels.com/photos/962464/pexels-photo-962464.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Goa Beach Paradise" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
                                 <div class="absolute top-3 right-3 bg-accent text-white px-2 py-1 rounded-full text-xs font-body font-medium">
                                     Beach Paradise
                                 </div>
@@ -118,7 +115,8 @@
                                     <div class="flex items-center text-text-secondary text-sm font-body">
                                         <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
                                             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                                        </svg> 15.2993° N, 74.1240° E
+                                        </svg>
+                                        15.2993° N, 74.1240° E
                                     </div>
                                     <button class="text-primary hover:text-primary-600 font-body font-medium transition-smooth">
                                         Explore →
@@ -130,8 +128,7 @@
                         <!-- Agra Card -->
                         <div class="destination-card flex-shrink-0 w-80 bg-surface rounded-travel-lg shadow-card overflow-hidden hover:shadow-modal transition-smooth hover-lift cursor-pointer" data-destination="agra">
                             <div class="relative h-48 overflow-hidden">
-                                <img src="https://images.pixabay.com/photo-2016/11/06/17/49/taj-mahal-1804047_1280.jpg" alt="Taj Mahal Agra" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;"
-                                />
+                                <img src="https://images.pixabay.com/photo-2016/11/06/17/49/taj-mahal-1804047_1280.jpg" alt="Taj Mahal Agra" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
                                 <div class="absolute top-3 right-3 bg-secondary text-white px-2 py-1 rounded-full text-xs font-body font-medium">
                                     Heritage Site
                                 </div>
@@ -143,7 +140,8 @@
                                     <div class="flex items-center text-text-secondary text-sm font-body">
                                         <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
                                             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                                        </svg> 27.1767° N, 78.0081° E
+                                        </svg>
+                                        27.1767° N, 78.0081° E
                                     </div>
                                     <button class="text-primary hover:text-primary-600 font-body font-medium transition-smooth">
                                         Explore →
@@ -155,8 +153,7 @@
                         <!-- Ladakh Card -->
                         <div class="destination-card flex-shrink-0 w-80 bg-surface rounded-travel-lg shadow-card overflow-hidden hover:shadow-modal transition-smooth hover-lift cursor-pointer" data-destination="ladakh">
                             <div class="relative h-48 overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80" alt="Ladakh Mountains" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;"
-                                />
+                                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80" alt="Ladakh Mountains" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;" />
                                 <div class="absolute top-3 right-3 bg-primary text-white px-2 py-1 rounded-full text-xs font-body font-medium">
                                     Adventure
                                 </div>
@@ -168,7 +165,8 @@
                                     <div class="flex items-center text-text-secondary text-sm font-body">
                                         <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
                                             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                                        </svg> 34.1526° N, 77.5771° E
+                                        </svg>
+                                        34.1526° N, 77.5771° E
                                     </div>
                                     <button class="text-primary hover:text-primary-600 font-body font-medium transition-smooth">
                                         Explore →
@@ -335,7 +333,7 @@
                     <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                     </svg>
-                    <span class="text-lg font-heading font-semibold text-text-primary">EXPLORE ON - Your Guide To A Great Trip</span>
+                    <span class="text-lg font-heading font-semibold text-text-primary">EXPLORE ON - Your guide to a great trip</span>
                 </div>
                 <p class="text-text-secondary font-body mb-4">Your gateway to incredible travel experiences across India</p>
                 <div class="flex justify-center space-x-6 mb-4">
@@ -344,7 +342,7 @@
                     <a href="javascript:void(0)" class="text-text-secondary hover:text-primary font-body transition-smooth">Contact</a>
                     <a href="javascript:void(0)" class="text-text-secondary hover:text-primary font-body transition-smooth">Privacy</a>
                 </div>
-                <p class="text-sm text-text-secondary font-body">© 2025 EXPLORE ON - Your Guide To A Great Trip. All Rights Reserved.</p>
+                <p class="text-sm text-text-secondary font-body">© 2025 EXPLORE ON - Your guide to a great trip. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
@@ -354,7 +352,7 @@
         // Global variables
         let map;
         let markers = [];
-
+        
         // Destination data
         const destinations = {
             goa: {
@@ -396,7 +394,7 @@
                 Object.keys(destinations).forEach(key => {
                     const dest = destinations[key];
                     const marker = L.marker(dest.coords).addTo(map);
-
+                    
                     // Create popup content
                     const popupContent = `
                         <div class="p-2">
@@ -408,7 +406,7 @@
                             </div>
                         </div>
                     `;
-
+                    
                     marker.bindPopup(popupContent);
                     markers.push(marker);
                 });
@@ -435,7 +433,7 @@
             if (dest) {
                 // Center map on destination
                 map.setView(dest.coords, 10);
-
+                
                 // Show destination details (could open a modal or sidebar)
                 alert(`Exploring ${dest.name}!\n\nAttractions: ${dest.attractions.join(', ')}`);
             }
@@ -542,47 +540,44 @@
 
     <style>
         /* Custom scrollbar for carousel */
-        
         .scrollbar-hide {
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
-        
         .scrollbar-hide::-webkit-scrollbar {
             display: none;
         }
+
         /* Line clamp utility */
-        
         .line-clamp-2 {
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+
         /* Map container styling */
-        
         #map {
             z-index: 1;
         }
+
         /* Leaflet popup custom styling */
-        
         .leaflet-popup-content-wrapper {
             border-radius: 0.75rem;
             box-shadow: 0 8px 16px rgba(44, 95, 65, 0.08), 0 4px 8px rgba(0, 0, 0, 0.05);
         }
-        
+
         .leaflet-popup-tip {
             background: white;
         }
+
         /* Mobile responsive adjustments */
-        
         @media (max-width: 768px) {
             #servicesModal .bg-surface {
                 border-radius: 1rem 1rem 0 0;
             }
         }
     </style>
-    <script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
 </body>
-
 </html>
