@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Registration - EXPLORE ON</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Ftravelhub3193back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+
+<body class="bg-background min-h-screen">
+    <!-- Registration Container -->
+    <div id="registrationContainer" class="min-h-screen flex items-center justify-center px-4 py-8">
+        <div class="w-full max-w-md">
+            <!-- Header Section -->
+            <div class="text-center mb-8">
+                <div class="mb-6">
+                    <svg class="w-16 h-16 mx-auto text-primary" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-heading font-bold text-text-primary mb-2">Welcome to EXPLORE ON</h1>
+                <p class="text-text-secondary font-body">Your Guide To a Great Trip - Create your account to explore amazing destinations</p>
+            </div>
+
+            <!-- Registration Form -->
+            <div class="bg-surface rounded-travel-lg shadow-card p-6 mb-6">
+                <form id="registrationForm" class="space-y-6">
+                    <!-- Username Field -->
+                    <div class="relative">
+                        <input type="text" id="username" name="username" class="w-full px-4 py-3 border border-border rounded-lg font-body text-base placeholder-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-smooth peer" placeholder="Username"
+                            required minlength="3" maxlength="20" />
+                        <label for="username" class="absolute left-4 -top-2.5 bg-surface px-2 text-sm font-body text-text-secondary transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-text-secondary peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary">
+                            Username
+                        </label>
+                        <div id="usernameError" class="hidden mt-2 text-sm text-error font-body"></div>
+                        <div id="usernameSuccess" class="hidden mt-2 text-sm text-success font-body">✓ Username is available</div>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="relative">
+                        <input type="email" id="email" name="email" class="w-full px-4 py-3 border border-border rounded-lg font-body text-base placeholder-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-smooth peer" placeholder="Email Address"
+                            required />
+                        <label for="email" class="absolute left-4 -top-2.5 bg-surface px-2 text-sm font-body text-text-secondary transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-text-secondary peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary">
+                            Email Address
+                        </label>
+                        <div id="emailError" class="hidden mt-2 text-sm text-error font-body"></div>
+                        <div id="emailSuccess" class="hidden mt-2 text-sm text-success font-body">✓ Valid email format</div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="relative">
+                        <input type="password" id="password" name="password" class="w-full px-4 py-3 border border-border rounded-lg font-body text-base placeholder-transparent focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-smooth peer pr-12"
+                            placeholder="Password" required minlength="8" />
+                        <label for="password" class="absolute left-4 -top-2.5 bg-surface px-2 text-sm font-body text-text-secondary transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-text-secondary peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary">
+                            Password
+                        </label>
+                        <button type="button" id="togglePassword" class="absolute right-3 top-3 text-text-secondary hover:text-primary transition-smooth">
+                            <svg id="eyeIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                        </button>
+                        <div id="passwordError" class="hidden mt-2 text-sm text-error font-body"></div>
+                        <div id="passwordStrength" class="mt-2">
+                            <div class="flex space-x-1">
+                                <div id="strength1" class="h-1 w-1/4 bg-border rounded"></div>
+                                <div id="strength2" class="h-1 w-1/4 bg-border rounded"></div>
+                                <div id="strength3" class="h-1 w-1/4 bg-border rounded"></div>
+                                <div id="strength4" class="h-1 w-1/4 bg-border rounded"></div>
+                            </div>
+                            <p id="strengthText" class="text-xs text-text-secondary mt-1 font-body">Password strength</p>
+                        </div>
+                    </div>
+
+                    <!-- Terms and Conditions -->
+                    <div class="flex items-start space-x-3">
+                        <input type="checkbox" id="terms" name="terms" class="mt-1 w-4 h-4 text-primary border-border rounded focus:ring-primary focus:ring-2" required />
+                        <label for="terms" class="text-sm text-text-secondary font-body leading-relaxed">
+                            I agree to the <a href="javascript:void(0)" class="text-primary hover:text-primary-600 underline">Terms of Service</a> and <a href="javascript:void(0)" class="text-primary hover:text-primary-600 underline">Privacy Policy</a>
+                        </label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="registerBtn" class="w-full bg-primary text-white py-3 px-6 rounded-lg font-body font-medium text-base hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-smooth disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span id="registerText">Create Account</span>
+                        <span id="registerLoading" class="hidden">
+                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                            </svg>
+                            Creating Account...
+                        </span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Login Link -->
+            <div class="text-center">
+                <p class="text-text-secondary font-body">
+                    Already have an account?
+                    <a href="interactive_travel_dashboard.html" class="text-primary hover:text-primary-600 font-medium underline">Sign In</a>
+                </p>
+            </div>
+
+            <!-- Quick Access Links -->
+            <div class="mt-8 text-center">
+                <p class="text-sm text-text-secondary font-body mb-4">Quick Access to Features:</p>
+                <div class="flex flex-wrap justify-center gap-2">
+                    <a href="hotel_booking_modal.html" class="px-3 py-1 bg-primary-50 text-primary text-sm rounded-full hover:bg-primary-100 transition-smooth">Hotels</a>
+                    <a href="nearby_places_discovery_modal.html" class="px-3 py-1 bg-accent-50 text-accent text-sm rounded-full hover:bg-accent-100 transition-smooth">Places</a>
+                    <a href="ai_trip_planner_modal.html" class="px-3 py-1 bg-secondary-50 text-secondary text-sm rounded-full hover:bg-secondary-100 transition-smooth">AI Planner</a>
+                    <a href="ride_booking_modal.html" class="px-3 py-1 bg-success-50 text-success text-sm rounded-full hover:bg-success-100 transition-smooth">Rides</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application Container (Hidden Initially) -->
+    <div id="mainAppContainer" class="hidden min-h-screen">
+        <!-- Navigation Header -->
+        <header class="bg-surface shadow-card sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center space-x-3">
+                        <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                        <h1 class="text-xl font-heading font-bold text-text-primary">EXPLORE ON </h1>
+                    </div>
+                    <nav class="hidden md:flex space-x-6">
+                        <a href="interactive_travel_dashboard.html" class="text-text-secondary hover:text-primary font-body transition-smooth">Dashboard</a>
+                        <a href="hotel_booking_modal.html" class="text-text-secondary hover:text-primary font-body transition-smooth">Hotels</a>
+                        <a href="nearby_places_discovery_modal.html" class="text-text-secondary hover:text-primary font-body transition-smooth">Places</a>
+                        <a href="ai_trip_planner_modal.html" class="text-text-secondary hover:text-primary font-body transition-smooth">AI Planner</a>
+                        <a href="ride_booking_modal.html" class="text-text-secondary hover:text-primary font-body transition-smooth">Rides</a>
+                    </nav>
+                    <div class="flex items-center space-x-3">
+                        <span class="text-sm text-text-secondary font-body">Welcome, <span id="userDisplayName">Traveler</span>!</span>
+                        <button id="logoutBtn" class="text-text-secondary hover:text-error transition-smooth">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Success Message -->
+        <div class="bg-success-50 border-l-4 border-success p-4 mx-4 mt-4 rounded-lg">
+            <div class="flex items-center">
+                <svg class="w-5 h-5 text-success mr-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                <p class="text-success font-body font-medium">Registration successful! Welcome to Explore on - Your guide to a great trip.</p>
+            </div>
+        </div>
+
+        <!-- Quick Access Dashboard -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-heading font-bold text-text-primary mb-2">Ready to Explore?</h2>
+                <p class="text-text-secondary font-body">Access all travel services from your dashboard</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Interactive Dashboard -->
+                <a href="interactive_travel_dashboard.html" class="group bg-surface rounded-travel-lg shadow-card p-6 hover:shadow-modal transition-smooth hover-lift">
+                    <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary-200 transition-smooth">
+                        <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-heading font-semibold text-text-primary mb-2">Travel Dashboard</h3>
+                    <p class="text-text-secondary font-body text-sm">Interactive map with destinations</p>
+                </a>
+
+                <!-- Hotel Booking -->
+                <a href="hotel_booking_modal.html" class="group bg-surface rounded-travel-lg shadow-card p-6 hover:shadow-modal transition-smooth hover-lift">
+                    <div class="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-accent-200 transition-smooth">
+                        <svg class="w-6 h-6 text-accent" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V6H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-heading font-semibold text-text-primary mb-2">Hotel Booking</h3>
+                    <p class="text-text-secondary font-body text-sm">5-star hotels with smart filters</p>
+                </a>
+
+                <!-- Nearby Places -->
+                <a href="nearby_places_discovery_modal.html" class="group bg-surface rounded-travel-lg shadow-card p-6 hover:shadow-modal transition-smooth hover-lift">
+                    <div class="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-secondary-200 transition-smooth">
+                        <svg class="w-6 h-6 text-secondary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-heading font-semibold text-text-primary mb-2">Nearby Places</h3>
+                    <p class="text-text-secondary font-body text-sm">Religious spots & adventure zones</p>
+                </a>
+
+                <!-- AI Trip Planner -->
+                <a href="ai_trip_planner_modal.html" class="group bg-surface rounded-travel-lg shadow-card p-6 hover:shadow-modal transition-smooth hover-lift">
+                    <div class="w-12 h-12 bg-success-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-success-200 transition-smooth">
+                        <svg class="w-6 h-6 text-success" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-heading font-semibold text-text-primary mb-2">AI Trip Planner</h3>
+                    <p class="text-text-secondary font-body text-sm">Day-by-day travel plans</p>
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Form validation and submission
+        const registrationForm = document.getElementById('registrationForm');
+        const usernameInput = document.getElementById('username');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const togglePassword = document.getElementById('togglePassword');
+        const registerBtn = document.getElementById('registerBtn');
+        const registerText = document.getElementById('registerText');
+        const registerLoading = document.getElementById('registerLoading');
+
+        // Password visibility toggle
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            const eyeIcon = document.getElementById('eyeIcon');
+            if (type === 'text') {
+                eyeIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"></path>';
+            } else {
+                eyeIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>';
+            }
+        });
+
+        // Real-time validation
+        usernameInput.addEventListener('input', validateUsername);
+        emailInput.addEventListener('input', validateEmail);
+        passwordInput.addEventListener('input', validatePassword);
+
+        function validateUsername() {
+            const username = usernameInput.value;
+            const usernameError = document.getElementById('usernameError');
+            const usernameSuccess = document.getElementById('usernameSuccess');
+
+            if (username.length < 3) {
+                showError(usernameError, 'Username must be at least 3 characters long');
+                hideSuccess(usernameSuccess);
+                return false;
+            } else if (username.length > 20) {
+                showError(usernameError, 'Username must be less than 20 characters');
+                hideSuccess(usernameSuccess);
+                return false;
+            } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+                showError(usernameError, 'Username can only contain letters, numbers, and underscores');
+                hideSuccess(usernameSuccess);
+                return false;
+            } else {
+                hideError(usernameError);
+                showSuccess(usernameSuccess);
+                return true;
+            }
+        }
+
+        function validateEmail() {
+            const email = emailInput.value;
+            const emailError = document.getElementById('emailError');
+            const emailSuccess = document.getElementById('emailSuccess');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailRegex.test(email)) {
+                showError(emailError, 'Please enter a valid email address');
+                hideSuccess(emailSuccess);
+                return false;
+            } else {
+                hideError(emailError);
+                showSuccess(emailSuccess);
+                return true;
+            }
+        }
+
+        function validatePassword() {
+            const password = passwordInput.value;
+            const passwordError = document.getElementById('passwordError');
+            const strengthBars = [
+                document.getElementById('strength1'),
+                document.getElementById('strength2'),
+                document.getElementById('strength3'),
+                document.getElementById('strength4')
+            ];
+            const strengthText = document.getElementById('strengthText');
+
+            let strength = 0;
+            let errors = [];
+
+            if (password.length < 8) {
+                errors.push('At least 8 characters');
+            } else {
+                strength++;
+            }
+
+            if (!/[a-z]/.test(password)) {
+                errors.push('One lowercase letter');
+            } else {
+                strength++;
+            }
+
+            if (!/[A-Z]/.test(password)) {
+                errors.push('One uppercase letter');
+            } else {
+                strength++;
+            }
+
+            if (!/[0-9]/.test(password)) {
+                errors.push('One number');
+            } else {
+                strength++;
+            }
+
+            // Update strength bars
+            strengthBars.forEach((bar, index) => {
+                if (index < strength) {
+                    if (strength <= 1) {
+                        bar.className = 'h-1 w-1/4 bg-error rounded';
+                    } else if (strength <= 2) {
+                        bar.className = 'h-1 w-1/4 bg-warning rounded';
+                    } else if (strength <= 3) {
+                        bar.className = 'h-1 w-1/4 bg-accent rounded';
+                    } else {
+                        bar.className = 'h-1 w-1/4 bg-success rounded';
+                    }
+                } else {
+                    bar.className = 'h-1 w-1/4 bg-border rounded';
+                }
+            });
+
+            // Update strength text
+            const strengthLabels = ['Weak', 'Fair', 'Good', 'Strong'];
+            const strengthColors = ['text-error', 'text-warning', 'text-accent', 'text-success'];
+
+            if (password.length > 0) {
+                strengthText.textContent = strengthLabels[strength - 1] || 'Very Weak';
+                strengthText.className = `text-xs mt-1 font-body ${strengthColors[strength - 1] || 'text-error'}`;
+            } else {
+                strengthText.textContent = 'Password strength';
+                strengthText.className = 'text-xs text-text-secondary mt-1 font-body';
+            }
+
+            if (errors.length > 0) {
+                showError(passwordError, 'Password needs: ' + errors.join(', '));
+                return false;
+            } else {
+                hideError(passwordError);
+                return true;
+            }
+        }
+
+        function showError(element, message) {
+            element.textContent = message;
+            element.classList.remove('hidden');
+            element.parentElement.querySelector('input').classList.add('border-error');
+        }
+
+        function hideError(element) {
+            element.classList.add('hidden');
+            element.parentElement.querySelector('input').classList.remove('border-error');
+        }
+
+        function showSuccess(element) {
+            element.classList.remove('hidden');
+            element.parentElement.querySelector('input').classList.add('border-success');
+        }
+
+        function hideSuccess(element) {
+            element.classList.add('hidden');
+            element.parentElement.querySelector('input').classList.remove('border-success');
+        }
+
+        // Form submission
+        registrationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const isUsernameValid = validateUsername();
+            const isEmailValid = validateEmail();
+            const isPasswordValid = validatePassword();
+            const termsAccepted = document.getElementById('terms').checked;
+
+            if (!termsAccepted) {
+                alert('Please accept the Terms of Service and Privacy Policy');
+                return;
+            }
+
+            if (isUsernameValid && isEmailValid && isPasswordValid) {
+                // Show loading state
+                registerBtn.disabled = true;
+                registerText.classList.add('hidden');
+                registerLoading.classList.remove('hidden');
+
+                // Simulate registration process
+                setTimeout(() => {
+                    // Store user data (mock)
+                    const userData = {
+                        username: usernameInput.value,
+                        email: emailInput.value,
+                        registrationDate: new Date().toISOString()
+                    };
+                    localStorage.setItem('EXPLORE ON  User', JSON.stringify(userData));
+
+                    // Show success and transition to main app
+                    alert('Registration successful! Welcome to Explore on  - Your guide to a great trip.');
+
+                    // Update user display name
+                    document.getElementById('userDisplayName').textContent = userData.username;
+
+                    // Hide registration container and show main app
+                    document.getElementById('registrationContainer').classList.add('hidden');
+                    document.getElementById('mainAppContainer').classList.remove('hidden');
+
+                    // Reset loading state
+                    registerBtn.disabled = false;
+                    registerText.classList.remove('hidden');
+                    registerLoading.classList.add('hidden');
+                }, 2000);
+            }
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('EXPLORE ON  User');
+                document.getElementById('mainAppContainer').classList.add('hidden');
+                document.getElementById('registrationContainer').classList.remove('hidden');
+                registrationForm.reset();
+            }
+        });
+
+        // Check if user is already registered
+        window.addEventListener('load', function() {
+            const userData = localStorage.getItem('EXPLORE ON  User');
+            if (userData) {
+                const user = JSON.parse(userData);
+                document.getElementById('userDisplayName').textContent = user.username;
+                document.getElementById('registrationContainer').classList.add('hidden');
+                document.getElementById('mainAppContainer').classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>

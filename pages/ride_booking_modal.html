@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ride Booking - TravelHub Portal</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Ftravelhub3193back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+
+<body class="bg-background min-h-screen">
+    <!-- Navigation Header -->
+    <header class="bg-surface shadow-card sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    </svg>
+                    <h1 class="text-xl font-heading font-bold text-text-primary">EXPLORE ON</h1>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="interactive_travel_dashboard.html" class="text-text-secondary hover:text-primary font-body transition-smooth">Dashboard</a>
+                    <a href="hotel_booking_modal.html" class="text-text-secondary hover:text-primary font-body transition-smooth">Hotels</a>
+                    <a href="nearby_places_discovery_modal.html" class="text-text-secondary hover:text-primary font-body transition-smooth">Places</a>
+                    <a href="ai_trip_planner_modal.html" class="text-text-secondary hover:text-primary font-body transition-smooth">AI Planner</a>
+                    <a href="ride_booking_modal.html" class="text-primary font-body font-medium">Rides</a>
+                </nav>
+                <div class="flex items-center space-x-3">
+                    <button id="closeModal" class="text-text-secondary hover:text-primary transition-smooth">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Modal Backdrop -->
+    <div id="modalBackdrop" class="fixed inset-0 bg-black bg-opacity-50 z-40 md:flex md:items-center md:justify-center">
+        <!-- Modal Container -->
+        <div class="bg-surface min-h-screen md:min-h-0 md:max-h-[90vh] md:w-full md:max-w-4xl md:rounded-travel-lg md:shadow-modal overflow-y-auto">
+            <!-- Modal Header -->
+            <div class="sticky top-0 bg-surface border-b border-border z-30 px-4 sm:px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-accent-100 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-accent" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.22.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-heading font-bold text-text-primary">Book Your Ride</h2>
+                            <p class="text-sm text-text-secondary font-body">Bangalore cab services</p>
+                        </div>
+                    </div>
+                    <button id="closeModalBtn" class="md:hidden text-text-secondary hover:text-primary transition-smooth">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="p-4 sm:p-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Booking Form Section -->
+                    <div class="space-y-6">
+                        <div class="bg-primary-50 rounded-travel-lg p-4 border border-primary-200">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                </svg>
+                                <h3 class="font-heading font-semibold text-primary">Ride Details</h3>
+                            </div>
+                            <p class="text-sm text-primary-700 font-body">Fill in your journey details to get available cab options</p>
+                        </div>
+
+                        <form id="rideBookingForm" class="space-y-6">
+                            <!-- Location Inputs -->
+                            <div class="space-y-4">
+                                <div class="relative">
+                                    <label for="pickupLocation" class="block text-sm font-body font-medium text-text-primary mb-2">
+                                        Pickup Location
+                                    </label>
+                                    <div class="relative">
+                                        <input type="text" id="pickupLocation" name="pickupLocation" class="w-full px-4 py-3 pl-12 border border-border rounded-lg font-body text-base focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-smooth" placeholder="Enter pickup address"
+                                            required />
+                                        <div class="absolute left-4 top-1/2 transform -translate-y-1/2">
+                                            <div class="w-3 h-3 bg-success rounded-full"></div>
+                                        </div>
+                                    </div>
+                                    <div id="pickupSuggestions" class="hidden absolute z-10 w-full bg-surface border border-border rounded-lg mt-1 shadow-card max-h-40 overflow-y-auto">
+                                        <div class="p-2 hover:bg-background cursor-pointer font-body text-sm">Koramangala, Bangalore</div>
+                                        <div class="p-2 hover:bg-background cursor-pointer font-body text-sm">Indiranagar, Bangalore</div>
+                                        <div class="p-2 hover:bg-background cursor-pointer font-body text-sm">MG Road, Bangalore</div>
+                                    </div>
+                                </div>
+
+                                <div class="relative">
+                                    <label for="destination" class="block text-sm font-body font-medium text-text-primary mb-2">
+                                        Destination
+                                    </label>
+                                    <div class="relative">
+                                        <input type="text" id="destination" name="destination" class="w-full px-4 py-3 pl-12 border border-border rounded-lg font-body text-base focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-smooth" placeholder="Enter destination address"
+                                            required />
+                                        <div class="absolute left-4 top-1/2 transform -translate-y-1/2">
+                                            <div class="w-3 h-3 bg-error rounded-full"></div>
+                                        </div>
+                                    </div>
+                                    <div id="destinationSuggestions" class="hidden absolute z-10 w-full bg-surface border border-border rounded-lg mt-1 shadow-card max-h-40 overflow-y-auto">
+                                        <div class="p-2 hover:bg-background cursor-pointer font-body text-sm">Kempegowda International Airport</div>
+                                        <div class="p-2 hover:bg-background cursor-pointer font-body text-sm">Bangalore City Railway Station</div>
+                                        <div class="p-2 hover:bg-background cursor-pointer font-body text-sm">Electronic City, Bangalore</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Date and Time Selection -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="rideDate" class="block text-sm font-body font-medium text-text-primary mb-2">
+                                        Date
+                                    </label>
+                                    <input type="date" id="rideDate" name="rideDate" class="w-full px-4 py-3 border border-border rounded-lg font-body text-base focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-smooth" required />
+                                </div>
+                                <div>
+                                    <label for="rideTime" class="block text-sm font-body font-medium text-text-primary mb-2">
+                                        Time
+                                    </label>
+                                    <input type="time" id="rideTime" name="rideTime" class="w-full px-4 py-3 border border-border rounded-lg font-body text-base focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-smooth" required />
+                                </div>
+                            </div>
+
+                            <!-- Passenger Count -->
+                            <div>
+                                <label for="passengerCount" class="block text-sm font-body font-medium text-text-primary mb-2">
+                                    Number of Passengers
+                                </label>
+                                <select id="passengerCount" name="passengerCount" class="w-full px-4 py-3 border border-border rounded-lg font-body text-base focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-smooth" required>
+                                    <option value>Select passengers</option>
+                                    <option value="1">1 Passenger</option>
+                                    <option value="2">2 Passengers</option>
+                                    <option value="3">3 Passengers</option>
+                                    <option value="4">4 Passengers</option>
+                                    <option value="5">5+ Passengers</option>
+                                </select>
+                            </div>
+
+                            <!-- Search Button -->
+                            <button type="submit" id="searchRidesBtn" class="w-full bg-primary text-white py-3 px-6 rounded-lg font-body font-medium text-base hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-smooth">
+                                <span id="searchText">Search Available Rides</span>
+                                <span id="searchLoading" class="hidden">
+                                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                                    </svg>
+                                    Searching...
+                                </span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Vehicle Selection Section -->
+                    <div class="space-y-6">
+                        <div class="bg-accent-50 rounded-travel-lg p-4 border border-accent-200">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <svg class="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.22.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
+                                </svg>
+                                <h3 class="font-heading font-semibold text-accent">Available Vehicles</h3>
+                            </div>
+                            <p class="text-sm text-accent-700 font-body">Choose your preferred cab type</p>
+                        </div>
+
+                        <div id="vehicleOptions" class="space-y-4">
+                            <!-- Economy Car -->
+                            <div class="bg-surface border border-border rounded-travel-lg p-4 hover:shadow-card transition-smooth cursor-pointer vehicle-option" data-vehicle="economy">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-16 h-16 bg-background rounded-lg overflow-hidden flex-shrink-0">
+                                        <img src="https://images.pexels.com/photos/116675/pexels-photo-116675.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Economy Car" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;"
+                                        />
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div>
+                                                <h4 class="font-heading font-semibold text-text-primary">Economy</h4>
+                                                <p class="text-sm text-text-secondary font-body">Maruti Swift, Hyundai i20</p>
+                                            </div>
+                                            <div class="text-right">
+                                                <p class="text-lg font-heading font-bold text-primary">₹180</p>
+                                                <p class="text-xs text-text-secondary font-body">Estimated fare</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between text-sm text-text-secondary font-body">
+                                            <span>4 seats • AC • 25 min</span>
+                                            <span class="text-success font-medium">Available</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="w-full mt-4 bg-primary text-white py-2 px-4 rounded-lg font-body font-medium hover:bg-primary-600 transition-smooth book-ride-btn">
+                                    Book Economy Ride
+                                </button>
+                            </div>
+
+                            <!-- Premium Car -->
+                            <div class="bg-surface border border-border rounded-travel-lg p-4 hover:shadow-card transition-smooth cursor-pointer vehicle-option" data-vehicle="premium">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-16 h-16 bg-background rounded-lg overflow-hidden flex-shrink-0">
+                                        <img src="https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Premium Car" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;"
+                                        />
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div>
+                                                <h4 class="font-heading font-semibold text-text-primary">Premium</h4>
+                                                <p class="text-sm text-text-secondary font-body">Honda City, Toyota Vios</p>
+                                            </div>
+                                            <div class="text-right">
+                                                <p class="text-lg font-heading font-bold text-primary">₹280</p>
+                                                <p class="text-xs text-text-secondary font-body">Estimated fare</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between text-sm text-text-secondary font-body">
+                                            <span>4 seats • AC • Leather • 22 min</span>
+                                            <span class="text-success font-medium">Available</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="w-full mt-4 bg-primary text-white py-2 px-4 rounded-lg font-body font-medium hover:bg-primary-600 transition-smooth book-ride-btn">
+                                    Book Premium Ride
+                                </button>
+                            </div>
+
+                            <!-- SUV -->
+                            <div class="bg-surface border border-border rounded-travel-lg p-4 hover:shadow-card transition-smooth cursor-pointer vehicle-option" data-vehicle="suv">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-16 h-16 bg-background rounded-lg overflow-hidden flex-shrink-0">
+                                        <img src="https://images.pixabay.com/photo/2016/04/01/12/16/car-1300629_960_720.png" alt="SUV" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;"
+                                        />
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div>
+                                                <h4 class="font-heading font-semibold text-text-primary">SUV</h4>
+                                                <p class="text-sm text-text-secondary font-body">Mahindra XUV, Tata Safari</p>
+                                            </div>
+                                            <div class="text-right">
+                                                <p class="text-lg font-heading font-bold text-primary">₹420</p>
+                                                <p class="text-xs text-text-secondary font-body">Estimated fare</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between text-sm text-text-secondary font-body">
+                                            <span>7 seats • AC • Spacious • 28 min</span>
+                                            <span class="text-warning font-medium">2 available</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="w-full mt-4 bg-primary text-white py-2 px-4 rounded-lg font-body font-medium hover:bg-primary-600 transition-smooth book-ride-btn">
+                                    Book SUV Ride
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Fare Breakdown -->
+                        <div id="fareBreakdown" class="hidden bg-background rounded-travel-lg p-4 border border-border">
+                            <h4 class="font-heading font-semibold text-text-primary mb-3">Fare Breakdown</h4>
+                            <div class="space-y-2 text-sm font-body">
+                                <div class="flex justify-between">
+                                    <span class="text-text-secondary">Base Fare</span>
+                                    <span class="text-text-primary">₹80</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-text-secondary">Distance (12 km)</span>
+                                    <span class="text-text-primary">₹84</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-text-secondary">Time (25 min)</span>
+                                    <span class="text-text-primary">₹16</span>
+                                </div>
+                                <div class="border-t border-border pt-2 flex justify-between font-medium">
+                                    <span class="text-text-primary">Total Fare</span>
+                                    <span class="text-primary">₹180</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Access Links -->
+                <div class="mt-8 pt-6 border-t border-border">
+                    <p class="text-sm text-text-secondary font-body mb-4 text-center">Explore other travel services:</p>
+                    <div class="flex flex-wrap justify-center gap-2">
+                        <a href="interactive_travel_dashboard.html" class="px-3 py-1 bg-primary-50 text-primary text-sm rounded-full hover:bg-primary-100 transition-smooth">Dashboard</a>
+                        <a href="hotel_booking_modal.html" class="px-3 py-1 bg-accent-50 text-accent text-sm rounded-full hover:bg-accent-100 transition-smooth">Hotels</a>
+                        <a href="nearby_places_discovery_modal.html" class="px-3 py-1 bg-secondary-50 text-secondary text-sm rounded-full hover:bg-secondary-100 transition-smooth">Places</a>
+                        <a href="ai_trip_planner_modal.html" class="px-3 py-1 bg-success-50 text-success text-sm rounded-full hover:bg-success-100 transition-smooth">AI Planner</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Confirmation Modal -->
+    <div id="confirmationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-60 flex items-center justify-center p-4">
+        <div class="bg-surface rounded-travel-lg shadow-modal max-w-md w-full p-6">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-success-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-success" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-heading font-bold text-text-primary mb-2">Booking Confirmed!</h3>
+                <p class="text-text-secondary font-body mb-4">Your ride has been successfully booked.</p>
+
+                <div class="bg-background rounded-lg p-4 mb-6 text-left">
+                    <div class="space-y-2 text-sm font-body">
+                        <div class="flex justify-between">
+                            <span class="text-text-secondary">Booking ID:</span>
+                            <span class="text-text-primary font-data" id="bookingId">TH-RB-2025-001</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-text-secondary">Vehicle:</span>
+                            <span class="text-text-primary" id="bookedVehicle">Economy</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-text-secondary">Pickup Time:</span>
+                            <span class="text-text-primary" id="pickupTime">2:30 PM</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-text-secondary">Estimated Fare:</span>
+                            <span class="text-primary font-medium" id="finalFare">₹180</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex space-x-3">
+                    <button id="trackRideBtn" class="flex-1 bg-primary text-white py-2 px-4 rounded-lg font-body font-medium hover:bg-primary-600 transition-smooth">
+                        Track Ride
+                    </button>
+                    <button id="closeConfirmationBtn" class="flex-1 bg-background text-text-primary py-2 px-4 rounded-lg font-body font-medium hover:bg-border transition-smooth">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // DOM Elements
+        const modalBackdrop = document.getElementById('modalBackdrop');
+        const closeModal = document.getElementById('closeModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const rideBookingForm = document.getElementById('rideBookingForm');
+        const searchRidesBtn = document.getElementById('searchRidesBtn');
+        const searchText = document.getElementById('searchText');
+        const searchLoading = document.getElementById('searchLoading');
+        const vehicleOptions = document.querySelectorAll('.vehicle-option');
+        const bookRideBtns = document.querySelectorAll('.book-ride-btn');
+        const confirmationModal = document.getElementById('confirmationModal');
+        const closeConfirmationBtn = document.getElementById('closeConfirmationBtn');
+        const trackRideBtn = document.getElementById('trackRideBtn');
+        const fareBreakdown = document.getElementById('fareBreakdown');
+
+        // Location inputs
+        const pickupInput = document.getElementById('pickupLocation');
+        const destinationInput = document.getElementById('destination');
+        const pickupSuggestions = document.getElementById('pickupSuggestions');
+        const destinationSuggestions = document.getElementById('destinationSuggestions');
+
+        // Set default date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('rideDate').value = today;
+        document.getElementById('rideDate').min = today;
+
+        // Set default time to current time + 30 minutes
+        const now = new Date();
+        now.setMinutes(now.getMinutes() + 30);
+        const timeString = now.toTimeString().slice(0, 5);
+        document.getElementById('rideTime').value = timeString;
+
+        // Close modal functionality
+        function closeRideModal() {
+            window.location.href = 'interactive_travel_dashboard.html';
+        }
+
+        closeModal.addEventListener('click', closeRideModal);
+        closeModalBtn.addEventListener('click', closeRideModal);
+
+        // Location autocomplete functionality
+        pickupInput.addEventListener('focus', () => {
+            pickupSuggestions.classList.remove('hidden');
+        });
+
+        pickupInput.addEventListener('blur', () => {
+            setTimeout(() => pickupSuggestions.classList.add('hidden'), 200);
+        });
+
+        destinationInput.addEventListener('focus', () => {
+            destinationSuggestions.classList.remove('hidden');
+        });
+
+        destinationInput.addEventListener('blur', () => {
+            setTimeout(() => destinationSuggestions.classList.add('hidden'), 200);
+        });
+
+        // Handle suggestion clicks
+        pickupSuggestions.addEventListener('click', (e) => {
+            if (e.target.classList.contains('cursor-pointer')) {
+                pickupInput.value = e.target.textContent;
+                pickupSuggestions.classList.add('hidden');
+            }
+        });
+
+        destinationSuggestions.addEventListener('click', (e) => {
+            if (e.target.classList.contains('cursor-pointer')) {
+                destinationInput.value = e.target.textContent;
+                destinationSuggestions.classList.add('hidden');
+            }
+        });
+
+        // Form submission
+        rideBookingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Show loading state
+            searchRidesBtn.disabled = true;
+            searchText.classList.add('hidden');
+            searchLoading.classList.remove('hidden');
+
+            // Simulate search process
+            setTimeout(() => {
+                // Reset loading state
+                searchRidesBtn.disabled = false;
+                searchText.classList.remove('hidden');
+                searchLoading.classList.add('hidden');
+
+                // Show fare breakdown
+                fareBreakdown.classList.remove('hidden');
+
+                // Scroll to vehicle options
+                document.getElementById('vehicleOptions').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+
+                // Show success message
+                alert('Available rides found! Please select your preferred vehicle.');
+            }, 2000);
+        });
+
+        // Vehicle selection
+        vehicleOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove previous selections
+                vehicleOptions.forEach(opt => opt.classList.remove('ring-2', 'ring-primary'));
+
+                // Add selection to clicked option
+                option.classList.add('ring-2', 'ring-primary');
+            });
+        });
+
+        // Book ride functionality
+        bookRideBtns.forEach((btn, index) => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+
+                const vehicleTypes = ['Economy', 'Premium', 'SUV'];
+                const fares = ['₹180', '₹280', '₹420'];
+
+                // Show loading state
+                btn.disabled = true;
+                btn.innerHTML = `
+                    <svg class="animate-spin -ml-1 mr-3 h-4 w-4 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Booking...
+                `;
+
+                // Simulate booking process
+                setTimeout(() => {
+                    // Generate booking ID
+                    const bookingId = 'TH-RB-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 1000)).padStart(3, '0');
+
+                    // Update confirmation modal
+                    document.getElementById('bookingId').textContent = bookingId;
+                    document.getElementById('bookedVehicle').textContent = vehicleTypes[index];
+                    document.getElementById('finalFare').textContent = fares[index];
+
+                    // Get selected time
+                    const selectedTime = document.getElementById('rideTime').value;
+                    const timeObj = new Date('2000-01-01 ' + selectedTime);
+                    const formattedTime = timeObj.toLocaleTimeString('en-US', {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true
+                    });
+                    document.getElementById('pickupTime').textContent = formattedTime;
+
+                    // Show confirmation modal
+                    confirmationModal.classList.remove('hidden');
+
+                    // Reset button
+                    btn.disabled = false;
+                    btn.innerHTML = `Book ${vehicleTypes[index]} Ride`;
+                }, 2000);
+            });
+        });
+
+        // Confirmation modal functionality
+        closeConfirmationBtn.addEventListener('click', () => {
+            confirmationModal.classList.add('hidden');
+        });
+
+        trackRideBtn.addEventListener('click', () => {
+            alert('Ride tracking feature will be available soon! You will receive SMS updates about your ride status.');
+            confirmationModal.classList.add('hidden');
+        });
+
+        // Real-time fare calculation (mock)
+        function updateFareEstimate() {
+            const pickup = pickupInput.value;
+            const destination = destinationInput.value;
+
+            if (pickup && destination) {
+                // Mock fare calculation based on distance
+                const baseFares = [180, 280, 420];
+                const vehicleFares = document.querySelectorAll('.vehicle-option .text-primary');
+
+                vehicleFares.forEach((fare, index) => {
+                    const randomMultiplier = 0.8 + Math.random() * 0.4; // 0.8 to 1.2
+                    const newFare = Math.round(baseFares[index] * randomMultiplier);
+                    fare.textContent = `₹${newFare}`;
+                });
+            }
+        }
+
+        // Update fares when locations change
+        pickupInput.addEventListener('input', updateFareEstimate);
+        destinationInput.addEventListener('input', updateFareEstimate);
+
+        // Initialize page
+        window.addEventListener('load', () => {
+            // Check if user came from a specific context
+            const urlParams = new URLSearchParams(window.location.search);
+            const from = urlParams.get('from');
+
+            if (from === 'dashboard') {
+                // Pre-fill some common locations for demo
+                setTimeout(() => {
+                    pickupInput.value = 'Koramangala, Bangalore';
+                    updateFareEstimate();
+                }, 500);
+            }
+        });
+    </script>
+</body>
+
+</html>

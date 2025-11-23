@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Trip Planner - EXPLORE ON </title>
+    <!-- Using Tailwind CDN instead of local CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .transition-smooth {
+            transition: all 0.3s ease;
+        }
+        
+        .rounded-travel-lg {
+            border-radius: 12px;
+        }
+        
+        .shadow-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    </svg>
+                    <h1 class="text-xl font-bold text-gray-800">EXPLORE ON </h1>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#" class="text-gray-600 hover:text-blue-600 transition-smooth">Dashboard</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-600 transition-smooth">Hotels</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-600 transition-smooth">Places</a>
+                    <a href="#" class="text-blue-600 font-medium">AI Planner</a>
+                    <a href="#" class="text-gray-600 hover:text-blue-600 transition-smooth">Rides</a>
+                </nav>
+                <div class="flex items-center space-x-3">
+                    <span class="text-sm text-gray-600">Welcome, Traveler!</span>
+                    <button id="logoutBtn" class="text-gray-600 hover:text-red-600 transition-smooth">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Header Section -->
+        <div class="text-center mb-8">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">AI Trip Planner</h1>
+            <p class="text-gray-600 max-w-2xl mx-auto">Let our AI create the perfect day-by-day itinerary for your dream vacation. Just tell us your preferences and we'll handle the rest.</p>
+        </div>
+
+        <!-- Trip Planning Form -->
+        <div id="planningForm" class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-lg shadow-card p-6 mb-8">
+                <form id="tripPlannerForm" class="space-y-6">
+                    <!-- Destination Selection -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="relative">
+                            <select id="destination" name="destination" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-smooth appearance-none bg-white" required>
+                                <option value="">Select Destination</option>
+                                <option value="goa">Goa - Beaches & Nightlife</option>
+                                <option value="agra">Agra - Historical Monuments</option>
+                                <option value="ladakh">Ladakh - Adventure & Mountains</option>
+                                <option value="kerala">Kerala - Backwaters & Nature</option>
+                                <option value="rajasthan">Rajasthan - Palaces & Desert</option>
+                                <option value="himachal">Himachal Pradesh - Hill Stations</option>
+                                <option value="mumbai">Mumbai - City & Culture</option>
+                                <option value="delhi">Delhi - Heritage & Food</option>
+                            </select>
+                            <label class="absolute left-4 -top-2.5 bg-white px-2 text-sm text-gray-600">
+                                Destination
+                            </label>
+                            <svg class="absolute right-3 top-3 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+
+                        <!-- Number of Travelers -->
+                        <div class="relative">
+                            <select id="travelers" name="travelers" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-smooth appearance-none bg-white" required>
+                                <option value="">Number of Travelers</option>
+                                <option value="1">Solo Traveler</option>
+                                <option value="2">Couple (2 people)</option>
+                                <option value="3-4">Small Group (3-4 people)</option>
+                                <option value="5-8">Medium Group (5-8 people)</option>
+                                <option value="9+">Large Group (9+ people)</option>
+                            </select>
+                            <label class="absolute left-4 -top-2.5 bg-white px-2 text-sm text-gray-600">
+                                Travelers
+                            </label>
+                            <svg class="absolute right-3 top-3 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Travel Dates -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="relative">
+                            <input type="date" id="startDate" name="startDate" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-smooth" required />
+                            <label class="absolute left-4 -top-2.5 bg-white px-2 text-sm text-gray-600">
+                                Start Date
+                            </label>
+                        </div>
+
+                        <div class="relative">
+                            <input type="date" id="endDate" name="endDate" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-smooth" required />
+                            <label class="absolute left-4 -top-2.5 bg-white px-2 text-sm text-gray-600">
+                                End Date
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Budget Range -->
+                    <div class="relative">
+                        <select id="budget" name="budget" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-smooth appearance-none bg-white" required>
+                            <option value="">Select Budget Range (per person)</option>
+                            <option value="budget">Budget - ₹5,000 - ₹15,000</option>
+                            <option value="mid-range">Mid-Range - ₹15,000 - ₹35,000</option>
+                            <option value="luxury">Luxury - ₹35,000 - ₹75,000</option>
+                            <option value="premium">Premium - ₹75,000+</option>
+                        </select>
+                        <label class="absolute left-4 -top-2.5 bg-white px-2 text-sm text-gray-600">
+                            Budget Range
+                        </label>
+                        <svg class="absolute right-3 top-3 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </div>
+
+                    <!-- Travel Preferences -->
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-3">Travel Preferences (Select all that apply)</label>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" name="preferences" value="adventure" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-600 focus:ring-2" />
+                                <span class="text-sm text-gray-800">Adventure</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" name="preferences" value="culture" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-600 focus:ring-2" />
+                                <span class="text-sm text-gray-800">Culture</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" name="preferences" value="food" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-600 focus:ring-2" />
+                                <span class="text-sm text-gray-800">Food</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" name="preferences" value="nature" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-600 focus:ring-2" />
+                                <span class="text-sm text-gray-800">Nature</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" name="preferences" value="relaxation" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-600 focus:ring-2" />
+                                <span class="text-sm text-gray-800">Relaxation</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" name="preferences" value="shopping" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-600 focus:ring-2" />
+                                <span class="text-sm text-gray-800">Shopping</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" name="preferences" value="nightlife" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-600 focus:ring-2" />
+                                <span class="text-sm text-gray-800">Nightlife</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" name="preferences" value="photography" class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-600 focus:ring-2" />
+                                <span class="text-sm text-gray-800">Photography</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Generate Button -->
+                    <div class="text-center pt-4">
+                        <button type="submit" id="generateBtn" class="bg-blue-600 text-white px-8 py-3 rounded-lg font-medium text-base hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-smooth disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span id="generateText">Generate AI Itinerary</span>
+                            <span id="generateLoading" class="hidden">
+                                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                                </svg>
+                                Generating Itinerary...
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="hidden max-w-4xl mx-auto">
+            <div class="bg-white rounded-lg shadow-card p-6 mb-8">
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="animate-spin w-8 h-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Creating Your Perfect Itinerary</h3>
+                    <p class="text-gray-600">Our AI is analyzing your preferences and crafting a personalized travel plan...</p>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
+                    <div id="progressBar" class="bg-blue-600 h-2 rounded-full transition-all duration-1000 ease-out" style="width: 0%"></div>
+                </div>
+
+                <!-- Loading Steps -->
+                <div class="space-y-3">
+                    <div id="step1" class="flex items-center space-x-3 opacity-50">
+                        <div class="w-6 h-6 rounded-full border-2 border-blue-600 flex items-center justify-center">
+                            <div class="w-2 h-2 bg-blue-600 rounded-full hidden"></div>
+                        </div>
+                        <span class="text-sm text-gray-600">Analyzing destination preferences</span>
+                    </div>
+                    <div id="step2" class="flex items-center space-x-3 opacity-50">
+                        <div class="w-6 h-6 rounded-full border-2 border-blue-600 flex items-center justify-center">
+                            <div class="w-2 h-2 bg-blue-600 rounded-full hidden"></div>
+                        </div>
+                        <span class="text-sm text-gray-600">Finding best attractions and activities</span>
+                    </div>
+                    <div id="step3" class="flex items-center space-x-3 opacity-50">
+                        <div class="w-6 h-6 rounded-full border-2 border-blue-600 flex items-center justify-center">
+                            <div class="w-2 h-2 bg-blue-600 rounded-full hidden"></div>
+                        </div>
+                        <span class="text-sm text-gray-600">Optimizing daily schedules</span>
+                    </div>
+                    <div id="step4" class="flex items-center space-x-3 opacity-50">
+                        <div class="w-6 h-6 rounded-full border-2 border-blue-600 flex items-center justify-center">
+                            <div class="w-2 h-2 bg-blue-600 rounded-full hidden"></div>
+                        </div>
+                        <span class="text-sm text-gray-600">Calculating budget estimates</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Generated Itinerary -->
+        <div id="generatedItinerary" class="hidden max-w-6xl mx-auto">
+            <!-- Itinerary Header -->
+            <div class="bg-white rounded-lg shadow-card p-6 mb-8">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Your AI-Generated Itinerary</h2>
+                        <p id="itinerarySubtitle" class="text-gray-600">5-day adventure in Goa for 2 travelers</p>
+                    </div>
+                    <div class="flex space-x-3 mt-4 md:mt-0">
+                        <button id="exportBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-purple-700 transition-smooth">
+                            <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            Export PDF
+                        </button>
+                        <button id="modifyBtn" class="border border-blue-600 text-blue-600 px-4 py-2 rounded-lg text-sm hover:bg-blue-50 transition-smooth">
+                            <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                            Modify
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Trip Summary -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-blue-50 rounded-lg">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-blue-600" id="totalDays">5</div>
+                        <div class="text-sm text-gray-600">Days</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-blue-600" id="totalCost">₹45,000</div>
+                        <div class="text-sm text-gray-600">Total Cost</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-blue-600" id="totalActivities">18</div>
+                        <div class="text-sm text-gray-600">Activities</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-blue-600" id="totalPlaces">12</div>
+                        <div class="text-sm text-gray-600">Places</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Daily Itinerary -->
+            <div id="dailyItinerary" class="space-y-6">
+                <!-- Day 1 -->
+                <div class="bg-white rounded-lg shadow-card overflow-hidden">
+                    <div class="bg-blue-600 text-white p-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-xl font-semibold">Day 1 - Arrival & Beach Exploration</h3>
+                            <span class="text-blue-200 text-sm">21/08/2025</span>
+                        </div>
+                        <p class="text-blue-100 text-sm mt-1">Estimated cost: ₹8,500 per person</p>
+                    </div>
+
+                    <div class="p-6">
+                        <div class="space-y-6">
+                            <!-- Morning -->
+                            <div class="flex space-x-4">
+                                <div class="flex-shrink-0">
+                                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <h4 class="font-semibold text-gray-800">Morning (9:00 AM - 12:00 PM)</h4>
+                                        <span class="px-2 py-1 bg-purple-100 text-purple-600 text-xs rounded-full">Beach</span>
+                                    </div>
+                                    <p class="text-gray-600 mb-3">Start your Goa adventure at the famous Baga Beach. Enjoy water sports, beach volleyball, and the vibrant morning atmosphere.</p>
+                                    <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                        <span class="flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            </svg>
+                                            Baga Beach
+                                        </span>
+                                        <span class="flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+                                            </svg>
+                                            ₹2,500
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Afternoon -->
+                            <div class="flex space-x-4">
+                                <div class="flex-shrink-0">
+                                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-yellow-600" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V6H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <h4 class="font-semibold text-gray-800">Afternoon (1:00 PM - 5:00 PM)</h4>
+                                        <span class="px-2 py-1 bg-yellow-100 text-yellow-600 text-xs rounded-full">Culture</span>
+                                    </div>
+                                    <p class="text-gray-600 mb-3">Visit the historic Fort Aguada and explore Portuguese colonial architecture. Enjoy lunch at a beachside shack with authentic Goan cuisine.</p>
+                                    <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                        <span class="flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            </svg>
+                                            Fort Aguada
+                                        </span>
+                                        <span class="flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+                                            </svg>
+                                            ₹3,500
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Evening -->
+                            <div class="flex space-x-4">
+                                <div class="flex-shrink-0">
+                                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <h4 class="font-semibold text-gray-800">Evening (6:00 PM - 10:00 PM)</h4>
+                                        <span class="px-2 py-1 bg-blue-100 text-blue-600 text-xs rounded-full">Nightlife</span>
+                                    </div>
+                                    <p class="text-gray-600 mb-3">Experience Goa's famous nightlife at Tito's Lane. Enjoy dinner, drinks, and live music at popular beach clubs.</p>
+                                    <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                        <span class="flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            </svg>
+                                            Tito's Lane, Baga
+                                        </span>
+                                        <span class="flex items-center">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+                                            </svg>
+                                            ₹2,500
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Travel Tips -->
+                        <div class="mt-6 p-4 bg-purple-50 rounded-lg">
+                            <h5 class="font-semibold text-gray-800 mb-2 flex items-center">
+                                <svg class="w-5 h-5 text-purple-600 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg> Travel Tips for Day 1
+                            </h5>
+                            <ul class="text-sm text-gray-600 space-y-1">
+                                <li>• Carry sunscreen and stay hydrated during beach activities</li>
+                                <li>• Book water sports in advance during peak season</li>
+                                <li>• Try the famous fish curry rice at local beach shacks</li>
+                                <li>• Keep cash handy as many beach vendors don't accept cards</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 mt-8">
+                <button id="bookHotelsBtn" class="flex-1 bg-purple-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-purple-700 transition-smooth">
+                    <svg class="w-5 h-5 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V6H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/>
+                    </svg>
+                    Book Hotels for This Trip
+                </button>
+                <button id="findPlacesBtn" class="flex-1 bg-yellow-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-yellow-700 transition-smooth">
+                    <svg class="w-5 h-5 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    Discover Nearby Places
+                </button>
+                <button id="bookRideBtn" class="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 transition-smooth">
+                    <svg class="w-5 h-5 inline mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.22.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
+                    </svg>
+                    Book Transportation
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="mt-12 text-center">
+            <h3 class="text-xl font-semibold text-gray-800 mb-6">Plan Another Trip</h3>
+            <div class="flex flex-wrap justify-center gap-3">
+                <button id="newPlanBtn" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-smooth">
+                    New Itinerary
+                </button>
+                <a href="#" class="bg-white border border-gray-300 text-gray-800 px-6 py-2 rounded-lg hover:bg-blue-50 transition-smooth">
+                    Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center">
+                <p class="text-gray-600 text-sm">© 2025 TravelHub Portal. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Form elements
+        const tripPlannerForm = document.getElementById('tripPlannerForm');
+        const planningForm = document.getElementById('planningForm');
+        const loadingState = document.getElementById('loadingState');
+        const generatedItinerary = document.getElementById('generatedItinerary');
+        const generateBtn = document.getElementById('generateBtn');
+        const generateText = document.getElementById('generateText');
+        const generateLoading = document.getElementById('generateLoading');
+
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('startDate').setAttribute('min', today);
+        document.getElementById('endDate').setAttribute('min', today);
+
+        // Update end date minimum when start date changes
+        document.getElementById('startDate').addEventListener('change', function() {
+            const startDate = this.value;
+            document.getElementById('endDate').setAttribute('min', startDate);
+        });
+
+        // Form submission
+        tripPlannerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get form data
+            const formData = new FormData(this);
+            const destination = formData.get('destination');
+            const travelers = formData.get('travelers');
+            const startDate = formData.get('startDate');
+            const endDate = formData.get('endDate');
+            const budget = formData.get('budget');
+            const preferences = formData.getAll('preferences');
+
+            // Validate form
+            if (!destination || !travelers || !startDate || !endDate || !budget) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            // Calculate trip duration
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            const diffTime = Math.abs(end - start);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+            if (diffDays < 1) {
+                alert('End date must be after start date');
+                return;
+            }
+
+            if (diffDays > 30) {
+                alert('Maximum trip duration is 30 days');
+                return;
+            }
+
+            // Show loading state
+            generateBtn.disabled = true;
+            generateText.classList.add('hidden');
+            generateLoading.classList.remove('hidden');
+
+            // Hide form and show loading
+            setTimeout(() => {
+                planningForm.classList.add('hidden');
+                loadingState.classList.remove('hidden');
+                simulateAIGeneration(destination, travelers, diffDays, budget, preferences);
+            }, 500);
+        });
+
+        // Simulate AI generation process
+        function simulateAIGeneration(destination, travelers, days, budget, preferences) {
+            const steps = ['step1', 'step2', 'step3', 'step4'];
+            const progressBar = document.getElementById('progressBar');
+            let currentStep = 0;
+
+            const interval = setInterval(() => {
+                if (currentStep < steps.length) {
+                    // Activate current step
+                    const stepElement = document.getElementById(steps[currentStep]);
+                    stepElement.classList.remove('opacity-50');
+                    stepElement.querySelector('.w-2').classList.remove('hidden');
+
+                    // Update progress bar
+                    const progress = ((currentStep + 1) / steps.length) * 100;
+                    progressBar.style.width = progress + '%';
+
+                    currentStep++;
+                } else {
+                    clearInterval(interval);
+                    // Show generated itinerary
+                    setTimeout(() => {
+                        loadingState.classList.add('hidden');
+                        generatedItinerary.classList.remove('hidden');
+                        updateItineraryContent(destination, travelers, days, budget);
+
+                        // Reset form
+                        generateBtn.disabled = false;
+                        generateText.classList.remove('hidden');
+                        generateLoading.classList.add('hidden');
+                    }, 1000);
+                }
+            }, 1500);
+        }
+
+        // Update itinerary content based on form data
+        function updateItineraryContent(destination, travelers, days, budget) {
+            const destinationNames = {
+                'goa': 'Goa',
+                'agra': 'Agra',
+                'ladakh': 'Ladakh',
+                'kerala': 'Kerala',
+                'rajasthan': 'Rajasthan',
+                'himachal': 'Himachal Pradesh',
+                'mumbai': 'Mumbai',
+                'delhi': 'Delhi'
+            };
+
+            const budgetRanges = {
+                'budget': '₹15,000',
+                'mid-range': '₹35,000',
+                'luxury': '₹65,000',
+                'premium': '₹95,000'
+            };
+
+            // Update header
+            const subtitle = `${days}-day adventure in ${destinationNames[destination]} for ${travelers} ${travelers === '1' ? 'traveler' : 'travelers'}`;
+            document.getElementById('itinerarySubtitle').textContent = subtitle;
+
+            // Update summary
+            document.getElementById('totalDays').textContent = days;
+            document.getElementById('totalCost').textContent = budgetRanges[budget] || '₹45,000';
+            document.getElementById('totalActivities').textContent = days * 3 + Math.floor(Math.random() * 5);
+            document.getElementById('totalPlaces').textContent = days * 2 + Math.floor(Math.random() * 3);
+        }
+
+        // Action button handlers
+        document.getElementById('bookHotelsBtn').addEventListener('click', function() {
+            alert('Hotel booking feature will be available soon!');
+        });
+
+        document.getElementById('findPlacesBtn').addEventListener('click', function() {
+            alert('Places discovery feature will be available soon!');
+        });
+
+        document.getElementById('bookRideBtn').addEventListener('click', function() {
+            alert('Transportation booking feature will be available soon!');
+        });
+
+        document.getElementById('newPlanBtn').addEventListener('click', function() {
+            // Reset form and show planning interface
+            generatedItinerary.classList.add('hidden');
+            planningForm.classList.remove('hidden');
+            tripPlannerForm.reset();
+
+            // Reset loading state
+            loadingState.classList.add('hidden');
+            const steps = ['step1', 'step2', 'step3', 'step4'];
+            steps.forEach(stepId => {
+                const stepElement = document.getElementById(stepId);
+                stepElement.classList.add('opacity-50');
+                stepElement.querySelector('.w-2').classList.add('hidden');
+            });
+            document.getElementById('progressBar').style.width = '0%';
+        });
+
+        // Export functionality
+        document.getElementById('exportBtn').addEventListener('click', function() {
+            alert('Itinerary export feature will be available soon!');
+        });
+
+        document.getElementById('modifyBtn').addEventListener('click', function() {
+            // Show form with current data
+            generatedItinerary.classList.add('hidden');
+            planningForm.classList.remove('hidden');
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to logout?')) {
+                alert('Logout functionality would redirect to login page');
+            }
+        });
+    </script>
+</body>
+
+</html>

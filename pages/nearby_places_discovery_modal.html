@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nearby Places Discovery - EXPLORE ON </title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Ftravelhub3193back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+
+<body class="bg-background min-h-screen">
+    <!-- Navigation Header -->
+    <header class="bg-surface shadow-card sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    </svg>
+                    <h1 class="text-xl font-heading font-bold text-text-primary">EXPLORE ON </h1>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="interactive_travel_dashboard.html" class="text-text-secondary hover:text-primary font-body transition-smooth">Dashboard</a>
+                    <a href="hotel_booking_modal.html" class="text-text-secondary hover:text-primary font-body transition-smooth">Hotels</a>
+                    <a href="nearby_places_discovery_modal.html" class="text-primary font-body font-medium">Places</a>
+                    <a href="ai_trip_planner_modal.html" class="text-text-secondary hover:text-primary font-body transition-smooth">AI Planner</a>
+                    <a href="ride_booking_modal.html" class="text-text-secondary hover:text-primary font-body transition-smooth">Rides</a>
+                </nav>
+                <div class="flex items-center space-x-3">
+                    <span class="text-sm text-text-secondary font-body">Welcome, <span id="userDisplayName">EXPLORE ON </span>!</span>
+                    <button id="logoutBtn" class="text-text-secondary hover:text-error transition-smooth">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Modal Overlay -->
+    <div id="modalOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-60 flex items-center justify-center p-4">
+        <!-- Modal Container -->
+        <div class="bg-surface rounded-travel-lg shadow-floating w-full max-w-6xl max-h-[90vh] overflow-hidden">
+            <!-- Modal Header -->
+            <div class="sticky top-0 bg-surface border-b border-border z-10">
+                <div class="flex items-center justify-between p-6">
+                    <div>
+                        <h2 class="text-2xl font-heading font-bold text-text-primary">Discover Nearby Places</h2>
+                        <p class="text-text-secondary font-body mt-1">Explore amazing destinations around you</p>
+                    </div>
+                    <button id="closeModal" class="text-text-secondary hover:text-error transition-smooth p-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Category Tabs -->
+                <div class="px-6 pb-4">
+                    <div class="flex space-x-1 bg-background rounded-lg p-1 overflow-x-auto">
+                        <button id="religiousTab" class="category-tab active flex-shrink-0 px-4 py-2 text-sm font-body font-medium rounded-md transition-smooth">
+                            <svg class="w-4 h-4 mr-2 inline" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2L8 7h3v10h2V7h3l-4-5z"/>
+                                <path d="M8 21h8v-2H8v2z"/>
+                            </svg>
+                            Religious Spots
+                        </button>
+                        <button id="adventureTab" class="category-tab flex-shrink-0 px-4 py-2 text-sm font-body font-medium rounded-md transition-smooth">
+                            <svg class="w-4 h-4 mr-2 inline" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M14 6l-3.75 5 2.85 3.8-1.6 1.2C9.81 13.75 7 10 7 10l-6 8h22L14 6z"/>
+                            </svg>
+                            Adventure Zones
+                        </button>
+                        <button id="beachesTab" class="category-tab flex-shrink-0 px-4 py-2 text-sm font-body font-medium rounded-md transition-smooth">
+                            <svg class="w-4 h-4 mr-2 inline" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                            Beaches
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="px-6 pb-4">
+                    <div class="relative">
+                        <input type="text" id="searchInput" placeholder="Search places by name or location..." class="w-full pl-10 pr-4 py-3 border border-border rounded-lg font-body focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-smooth" />
+                        <svg class="absolute left-3 top-3.5 w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        <button id="clearSearch" class="absolute right-3 top-3.5 text-text-secondary hover:text-primary transition-smooth hidden">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
+                <!-- Loading State -->
+                <div id="loadingState" class="hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="skeleton h-64 rounded-travel-lg"></div>
+                        <div class="skeleton h-64 rounded-travel-lg"></div>
+                        <div class="skeleton h-64 rounded-travel-lg"></div>
+                        <div class="skeleton h-64 rounded-travel-lg"></div>
+                        <div class="skeleton h-64 rounded-travel-lg"></div>
+                        <div class="skeleton h-64 rounded-travel-lg"></div>
+                    </div>
+                </div>
+
+                <!-- Religious Spots Content -->
+                <div id="religiousContent" class="category-content">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Golden Temple -->
+                        <div class="place-card bg-surface rounded-travel-lg shadow-card overflow-hidden hover:shadow-modal transition-smooth hover-lift">
+                            <div class="relative h-48 overflow-hidden">
+                                <img src="https://images.pexels.com/photos/3581368/pexels-photo-3581368.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Golden Temple" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;"
+                                />
+                                <div class="absolute top-3 right-3 bg-white bg-opacity-90 px-2 py-1 rounded-full text-xs font-body font-medium">
+                                    2.5 km
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-lg font-heading font-semibold text-text-primary mb-2">Golden Temple</h3>
+                                <p class="text-text-secondary font-body text-sm mb-3 line-clamp-2">Sacred Sikh temple known for its stunning golden architecture and spiritual significance.</p>
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center space-x-1">
+                                        <div class="flex text-warning">
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm font-body text-text-secondary ml-1">4.9</span>
+                                    </div>
+                                    <span class="text-xs font-body text-text-secondary bg-primary-50 px-2 py-1 rounded-full">Religious</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="flex-1 bg-primary text-white py-2 px-3 rounded-lg font-body text-sm hover:bg-primary-600 transition-smooth">
+                                        Get Directions
+                                    </button>
+                                    <button class="flex-1 border border-border text-text-primary py-2 px-3 rounded-lg font-body text-sm hover:bg-background transition-smooth">
+                                        Learn More
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Vaishno Devi -->
+                        <div class="place-card bg-surface rounded-travel-lg shadow-card overflow-hidden hover:shadow-modal transition-smooth hover-lift">
+                            <div class="relative h-48 overflow-hidden">
+                                <img src="https://images.pixabay.com/photo-2019/12/09/16/48/temple-4684516_1280.jpg" alt="Vaishno Devi Temple" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;"
+                                />
+                                <div class="absolute top-3 right-3 bg-white bg-opacity-90 px-2 py-1 rounded-full text-xs font-body font-medium">
+                                    15 km
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-lg font-heading font-semibold text-text-primary mb-2">Vaishno Devi Temple</h3>
+                                <p class="text-text-secondary font-body text-sm mb-3 line-clamp-2">Holy shrine dedicated to Goddess Vaishno Devi, located in the Trikuta Mountains.</p>
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center space-x-1">
+                                        <div class="flex text-warning">
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 text-border fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm font-body text-text-secondary ml-1">4.7</span>
+                                    </div>
+                                    <span class="text-xs font-body text-text-secondary bg-primary-50 px-2 py-1 rounded-full">Religious</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="flex-1 bg-primary text-white py-2 px-3 rounded-lg font-body text-sm hover:bg-primary-600 transition-smooth">
+                                        Get Directions
+                                    </button>
+                                    <button class="flex-1 border border-border text-text-primary py-2 px-3 rounded-lg font-body text-sm hover:bg-background transition-smooth">
+                                        Learn More
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Meenakshi Temple -->
+                        <div class="place-card bg-surface rounded-travel-lg shadow-card overflow-hidden hover:shadow-modal transition-smooth hover-lift">
+                            <div class="relative h-48 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Meenakshi Temple" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;"
+                                />
+                                <div class="absolute top-3 right-3 bg-white bg-opacity-90 px-2 py-1 rounded-full text-xs font-body font-medium">
+                                    8.2 km
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-lg font-heading font-semibold text-text-primary mb-2">Meenakshi Temple</h3>
+                                <p class="text-text-secondary font-body text-sm mb-3 line-clamp-2">Historic Hindu temple complex with intricate architecture and colorful gopurams.</p>
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center space-x-1">
+                                        <div class="flex text-warning">
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm font-body text-text-secondary ml-1">4.8</span>
+                                    </div>
+                                    <span class="text-xs font-body text-text-secondary bg-primary-50 px-2 py-1 rounded-full">Religious</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="flex-1 bg-primary text-white py-2 px-3 rounded-lg font-body text-sm hover:bg-primary-600 transition-smooth">
+                                        Get Directions
+                                    </button>
+                                    <button class="flex-1 border border-border text-text-primary py-2 px-3 rounded-lg font-body text-sm hover:bg-background transition-smooth">
+                                        Learn More
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Adventure Zones Content -->
+                <div id="adventureContent" class="category-content hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Rishikesh -->
+                        <div class="place-card bg-surface rounded-travel-lg shadow-card overflow-hidden hover:shadow-modal transition-smooth hover-lift">
+                            <div class="relative h-48 overflow-hidden">
+                                <img src="https://images.pexels.com/photos/3408744/pexels-photo-3408744.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Rishikesh Adventure" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;"
+                                />
+                                <div class="absolute top-3 right-3 bg-white bg-opacity-90 px-2 py-1 rounded-full text-xs font-body font-medium">
+                                    12 km
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-lg font-heading font-semibold text-text-primary mb-2">Rishikesh Adventure</h3>
+                                <p class="text-text-secondary font-body text-sm mb-3 line-clamp-2">White water rafting, bungee jumping, and river camping in the adventure capital of India.</p>
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center space-x-1">
+                                        <div class="flex text-warning">
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 text-border fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm font-body text-text-secondary ml-1">4.6</span>
+                                    </div>
+                                    <span class="text-xs font-body text-text-secondary bg-accent-50 px-2 py-1 rounded-full">Adventure</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="flex-1 bg-primary text-white py-2 px-3 rounded-lg font-body text-sm hover:bg-primary-600 transition-smooth">
+                                        Get Directions
+                                    </button>
+                                    <button class="flex-1 border border-border text-text-primary py-2 px-3 rounded-lg font-body text-sm hover:bg-background transition-smooth">
+                                        Learn More
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Manali Adventure -->
+                        <div class="place-card bg-surface rounded-travel-lg shadow-card overflow-hidden hover:shadow-modal transition-smooth hover-lift">
+                            <div class="relative h-48 overflow-hidden">
+                                <img src="https://images.pixabay.com/photo-2017/02/12/10/29/mountains-2059966_1280.jpg" alt="Manali Adventure" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;"
+                                />
+                                <div class="absolute top-3 right-3 bg-white bg-opacity-90 px-2 py-1 rounded-full text-xs font-body font-medium">
+                                    25 km
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-lg font-heading font-semibold text-text-primary mb-2">Manali Adventure</h3>
+                                <p class="text-text-secondary font-body text-sm mb-3 line-clamp-2">Paragliding, skiing, trekking, and mountain biking in the beautiful Himalayas.</p>
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center space-x-1">
+                                        <div class="flex text-warning">
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm font-body text-text-secondary ml-1">4.8</span>
+                                    </div>
+                                    <span class="text-xs font-body text-text-secondary bg-accent-50 px-2 py-1 rounded-full">Adventure</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="flex-1 bg-primary text-white py-2 px-3 rounded-lg font-body text-sm hover:bg-primary-600 transition-smooth">
+                                        Get Directions
+                                    </button>
+                                    <button class="flex-1 border border-border text-text-primary py-2 px-3 rounded-lg font-body text-sm hover:bg-background transition-smooth">
+                                        Learn More
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ladakh Adventure -->
+                        <div class="place-card bg-surface rounded-travel-lg shadow-card overflow-hidden hover:shadow-modal transition-smooth hover-lift">
+                            <div class="relative h-48 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Ladakh Adventure" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;"
+                                />
+                                <div class="absolute top-3 right-3 bg-white bg-opacity-90 px-2 py-1 rounded-full text-xs font-body font-medium">
+                                    45 km
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-lg font-heading font-semibold text-text-primary mb-2">Ladakh Adventure</h3>
+                                <p class="text-text-secondary font-body text-sm mb-3 line-clamp-2">High-altitude trekking, motorcycle expeditions, and desert camping experiences.</p>
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center space-x-1">
+                                        <div class="flex text-warning">
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm font-body text-text-secondary ml-1">4.9</span>
+                                    </div>
+                                    <span class="text-xs font-body text-text-secondary bg-accent-50 px-2 py-1 rounded-full">Adventure</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="flex-1 bg-primary text-white py-2 px-3 rounded-lg font-body text-sm hover:bg-primary-600 transition-smooth">
+                                        Get Directions
+                                    </button>
+                                    <button class="flex-1 border border-border text-text-primary py-2 px-3 rounded-lg font-body text-sm hover:bg-background transition-smooth">
+                                        Learn More
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Beaches Content -->
+                <div id="beachesContent" class="category-content hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Goa Beaches -->
+                        <div class="place-card bg-surface rounded-travel-lg shadow-card overflow-hidden hover:shadow-modal transition-smooth hover-lift">
+                            <div class="relative h-48 overflow-hidden">
+                                <img src="https://images.pexels.com/photos/1450353/pexels-photo-1450353.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Goa Beach" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;"
+                                />
+                                <div class="absolute top-3 right-3 bg-white bg-opacity-90 px-2 py-1 rounded-full text-xs font-body font-medium">
+                                    5 km
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-lg font-heading font-semibold text-text-primary mb-2">Baga Beach, Goa</h3>
+                                <p class="text-text-secondary font-body text-sm mb-3 line-clamp-2">Popular beach destination with water sports, beach shacks, and vibrant nightlife.</p>
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center space-x-1">
+                                        <div class="flex text-warning">
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 text-border fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm font-body text-text-secondary ml-1">4.5</span>
+                                    </div>
+                                    <span class="text-xs font-body text-text-secondary bg-secondary-50 px-2 py-1 rounded-full">Beach</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="flex-1 bg-primary text-white py-2 px-3 rounded-lg font-body text-sm hover:bg-primary-600 transition-smooth">
+                                        Get Directions
+                                    </button>
+                                    <button class="flex-1 border border-border text-text-primary py-2 px-3 rounded-lg font-body text-sm hover:bg-background transition-smooth">
+                                        Learn More
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Marina Beach -->
+                        <div class="place-card bg-surface rounded-travel-lg shadow-card overflow-hidden hover:shadow-modal transition-smooth hover-lift">
+                            <div class="relative h-48 overflow-hidden">
+                                <img src="https://images.pixabay.com/photo-2016/11/29/05/45/astronomy-1867616_1280.jpg" alt="Marina Beach" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;"
+                                />
+                                <div class="absolute top-3 right-3 bg-white bg-opacity-90 px-2 py-1 rounded-full text-xs font-body font-medium">
+                                    18 km
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-lg font-heading font-semibold text-text-primary mb-2">Marina Beach, Chennai</h3>
+                                <p class="text-text-secondary font-body text-sm mb-3 line-clamp-2">One of the longest urban beaches in the world with lighthouse and local food stalls.</p>
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center space-x-1">
+                                        <div class="flex text-warning">
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 text-border fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm font-body text-text-secondary ml-1">4.3</span>
+                                    </div>
+                                    <span class="text-xs font-body text-text-secondary bg-secondary-50 px-2 py-1 rounded-full">Beach</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="flex-1 bg-primary text-white py-2 px-3 rounded-lg font-body text-sm hover:bg-primary-600 transition-smooth">
+                                        Get Directions
+                                    </button>
+                                    <button class="flex-1 border border-border text-text-primary py-2 px-3 rounded-lg font-body text-sm hover:bg-background transition-smooth">
+                                        Learn More
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kovalam Beach -->
+                        <div class="place-card bg-surface rounded-travel-lg shadow-card overflow-hidden hover:shadow-modal transition-smooth hover-lift">
+                            <div class="relative h-48 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Kovalam Beach" class="w-full h-full object-cover" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;"
+                                />
+                                <div class="absolute top-3 right-3 bg-white bg-opacity-90 px-2 py-1 rounded-full text-xs font-body font-medium">
+                                    22 km
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-lg font-heading font-semibold text-text-primary mb-2">Kovalam Beach, Kerala</h3>
+                                <p class="text-text-secondary font-body text-sm mb-3 line-clamp-2">Crescent-shaped beach with lighthouse, Ayurvedic treatments, and coconut groves.</p>
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center space-x-1">
+                                        <div class="flex text-warning">
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                            </svg>
+                                        </div>
+                                        <span class="text-sm font-body text-text-secondary ml-1">4.7</span>
+                                    </div>
+                                    <span class="text-xs font-body text-text-secondary bg-secondary-50 px-2 py-1 rounded-full">Beach</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="flex-1 bg-primary text-white py-2 px-3 rounded-lg font-body text-sm hover:bg-primary-600 transition-smooth">
+                                        Get Directions
+                                    </button>
+                                    <button class="flex-1 border border-border text-text-primary py-2 px-3 rounded-lg font-body text-sm hover:bg-background transition-smooth">
+                                        Learn More
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="hidden text-center py-12">
+                    <svg class="w-16 h-16 text-text-secondary mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <h3 class="text-lg font-heading font-semibold text-text-primary mb-2">No places found</h3>
+                    <p class="text-text-secondary font-body">Try adjusting your search or explore different categories.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // DOM Elements
+        const modalOverlay = document.getElementById('modalOverlay');
+        const closeModal = document.getElementById('closeModal');
+        const categoryTabs = document.querySelectorAll('.category-tab');
+        const categoryContents = document.querySelectorAll('.category-content');
+        const searchInput = document.getElementById('searchInput');
+        const clearSearch = document.getElementById('clearSearch');
+        const loadingState = document.getElementById('loadingState');
+        const emptyState = document.getElementById('emptyState');
+        const placeCards = document.querySelectorAll('.place-card');
+
+        // Initialize user display
+        window.addEventListener('load', function() {
+            const userData = localStorage.getItem('travelHubUser');
+            if (userData) {
+                const user = JSON.parse(userData);
+                document.getElementById('userDisplayName').textContent = user.username;
+            }
+        });
+
+        // Close modal functionality
+        closeModal.addEventListener('click', function() {
+            window.location.href = 'interactive_travel_dashboard.html';
+        });
+
+        // Close modal on overlay click
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) {
+                window.location.href = 'interactive_travel_dashboard.html';
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                window.location.href = 'interactive_travel_dashboard.html';
+            }
+        });
+
+        // Category tab switching
+        categoryTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabId = this.id;
+                let contentId;
+
+                // Remove active class from all tabs
+                categoryTabs.forEach(t => {
+                    t.classList.remove('active', 'bg-primary', 'text-white');
+                    t.classList.add('text-text-secondary', 'hover:text-primary', 'hover:bg-background');
+                });
+
+                // Add active class to clicked tab
+                this.classList.add('active', 'bg-primary', 'text-white');
+                this.classList.remove('text-text-secondary', 'hover:text-primary', 'hover:bg-background');
+
+                // Hide all content sections
+                categoryContents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+
+                // Show corresponding content
+                if (tabId === 'religiousTab') {
+                    contentId = 'religiousContent';
+                } else if (tabId === 'adventureTab') {
+                    contentId = 'adventureContent';
+                } else if (tabId === 'beachesTab') {
+                    contentId = 'beachesContent';
+                }
+
+                // Show loading state briefly
+                showLoadingState();
+                setTimeout(() => {
+                    hideLoadingState();
+                    document.getElementById(contentId).classList.remove('hidden');
+                }, 800);
+
+                // Clear search when switching tabs
+                searchInput.value = '';
+                clearSearch.classList.add('hidden');
+                showAllCards();
+            });
+        });
+
+        // Search functionality
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+
+            if (searchTerm.length > 0) {
+                clearSearch.classList.remove('hidden');
+                filterPlaces(searchTerm);
+            } else {
+                clearSearch.classList.add('hidden');
+                showAllCards();
+            }
+        });
+
+        // Clear search
+        clearSearch.addEventListener('click', function() {
+            searchInput.value = '';
+            this.classList.add('hidden');
+            showAllCards();
+            searchInput.focus();
+        });
+
+        // Filter places based on search term
+        function filterPlaces(searchTerm) {
+            const activeContent = document.querySelector('.category-content:not(.hidden)');
+            const cards = activeContent.querySelectorAll('.place-card');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+
+                if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Show empty state if no results
+            if (visibleCount === 0) {
+                activeContent.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+            }
+        }
+
+        // Show all cards
+        function showAllCards() {
+            const activeContent = document.querySelector('.category-content:not(.hidden)');
+            if (activeContent) {
+                const cards = activeContent.querySelectorAll('.place-card');
+                cards.forEach(card => {
+                    card.style.display = 'block';
+                });
+            }
+            emptyState.classList.add('hidden');
+        }
+
+        // Loading state functions
+        function showLoadingState() {
+            categoryContents.forEach(content => {
+                content.classList.add('hidden');
+            });
+            emptyState.classList.add('hidden');
+            loadingState.classList.remove('hidden');
+        }
+
+        function hideLoadingState() {
+            loadingState.classList.add('hidden');
+        }
+
+        // Initialize default tab
+        document.getElementById('religiousTab').classList.add('active', 'bg-primary', 'text-white');
+        document.getElementById('religiousTab').classList.remove('text-text-secondary', 'hover:text-primary', 'hover:bg-background');
+
+        // Button interactions
+        document.addEventListener('click', function(e) {
+            if (e.target.textContent === 'Get Directions') {
+                const placeName = e.target.closest('.place-card').querySelector('h3').textContent;
+                alert(`Opening directions to ${placeName}...`);
+                // In a real app, this would integrate with maps API
+            }
+
+            if (e.target.textContent === 'Learn More') {
+                const placeName = e.target.closest('.place-card').querySelector('h3').textContent;
+                alert(`Loading more information about ${placeName}...`);
+                // In a real app, this would show detailed information modal
+            }
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('travelHubUser');
+                window.location.href = 'user_registration.html';
+            }
+        });
+
+        // Responsive behavior for mobile
+        function handleResize() {
+            if (window.innerWidth < 768) {
+                // Mobile optimizations
+                modalOverlay.classList.add('p-2');
+            } else {
+                modalOverlay.classList.remove('p-2');
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+        handleResize(); // Initial call
+    </script>
+</body>
+
+</html>
